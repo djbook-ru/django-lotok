@@ -1,0 +1,12 @@
+{% extends 'tstapp/index.html' %}
+{% block content %}
+    <p>Category info</p>
+    <p>{{ category.name }}</p>
+    <ul>
+        {% for product in category.product_set.all %}
+            <li><a href="{% url 'product' product.name %}">{{ product.name }}</a></li>
+        {% empty %}
+            <li>Category have not products</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

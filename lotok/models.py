@@ -1,19 +1,17 @@
-# -*- coding: utf-8 -*-
 
 import hashlib
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-import mptt
+from mptt.models import TreeForeignKey, MPTTModel
 
-from src.storage.models import HashedFileSystemStorage
-from src.storage.models import upload_by_hash
+from hranilishe.filesystem import *
 
 
-class Category(mptt.models.MPTTModel):
+class Category(MPTTModel):
     name = models.CharField(max_length=128, unique=True)
     slug = models.SlugField(max_length=255, unique=True)
-    parent = mptt.models.TreeForeignKey('self', null=True, blank=True,
+    parent = TreeForeignKey('self', null=True, blank=True,
                                         related_name='children', db_index=True)
 
     class Meta:
@@ -29,7 +27,7 @@ class Category(mptt.models.MPTTModel):
 
 
 class Product(models.Model):
-    category = models.ForeignKey('lotok.Category')
+    category = models.ForeignKey(Category)
     name = models.CharField(max_length=128, unique=True)
     slug = models.SlugField(max_length=255, unique=True)
     is_hidden = models.BooleanField(_(u'Do not show this product'), default=False)
@@ -45,7 +43,7 @@ class Product(models.Model):
 
 
 class Property(models.Model):
-    product = models.ForeignKey('lotok.Product')
+    product = models.ForeignKey(Product)
     key = models.CharField(verbose_name=_(u'title'), max_length=64)
     value = models.CharField(verbose_name=_(u'value'), max_length=128)
 

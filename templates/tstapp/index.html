@@ -1,0 +1,24 @@
+{% load mptt_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf8">
+    <title>Title</title>
+</head>
+<body>
+{% block content %}
+    <ul>
+        {% recursetree categories %}
+            <li>
+                <a href="{% url 'category' name=node.name %}">{{ node.name }}</a>
+                {% if not node.is_leaf_node %}
+                    <ul class="children">
+                        {{ children }}
+                    </ul>
+                {% endif %}
+            </li>
+        {% endrecursetree %}
+    </ul>
+{% endblock %}
+</body>
+</html>

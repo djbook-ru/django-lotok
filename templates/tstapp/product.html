@@ -1,0 +1,12 @@
+{% extends 'tstapp/index.html' %}
+{% block content %}
+    <p>Product info</p>
+    <p>{{ product.name }}</p>
+    <ul>
+    {% for property in product.property_set.all %}
+        <li>Title: {{ property.key }}, value: {{ property.value }}</li>
+    {% empty %}
+        <li>Product have not properties</li>
+    {% endfor %}
+    </ul>
+{% endblock %}
